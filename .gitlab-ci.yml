@@ -108,6 +108,6 @@ upload:
     - tar -czvf win-$VERSION.tar.gz -C build-win/Release .
     - tar -czvf linux-$VERSION.tar.gz -C build-linux .
     - tar -czvf mac-$VERSION.tar.gz -C build-mac .
-    - gsutil cp win-$VERSION.tar.gz gs://cudo-download/images/cudo-xmrig/win/x64/$VERSION-rx.tar.gz
-    - gsutil cp linux-$VERSION.tar.gz gs://cudo-download/images/cudo-xmrig/linux/x64/$VERSION-rx.tar.gz
-    - gsutil cp mac-$VERSION.tar.gz gs://cudo-download/images/cudo-xmrig/mac/x64/$VERSION-rx.tar.gz
+    - gsutil cp win-$VERSION.tar.gz gs://cudo-download/images/cudo-xmrig/win/x64/$VERSION.tar.gz
+    - gsutil cp linux-$VERSION.tar.gz gs://cudo-download/images/cudo-xmrig/linux/x64/$VERSION.tar.gz
+    - gsutil cp mac-$VERSION.tar.gz gs://cudo-download/images/cudo-xmrig/mac/x64/$VERSION.tar.gz
