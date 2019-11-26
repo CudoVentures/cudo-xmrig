@@ -98,16 +98,16 @@ upload:
     - yarn --cwd addon
     - yarn --cwd addon build
     - "VERSION=$(grep -m1 version package.json | awk -F: '{ print $2 }' | sed 's/[\", ]//g')"
-    - node scripts/sign.js build-win/bin/Release/xmrig.exe
-    - cp addon/dist/bundle.js  build-win/bin/Release
+    - node scripts/sign.js build-win/Release/xmrig.exe
+    - cp addon/dist/bundle.js  build-win/Release
     - cp addon/dist/bundle.js build-linux
     - cp addon/dist/bundle.js build-mac
-    - cp addon/package.json  build-win/bin/Release
-    - cp addon/package.json build-linux/bin
-    - cp addon/package.json build-mac/bin
-    - tar -czvf win-$VERSION.tar.gz -C build-win/bin/Release .
-    - tar -czvf linux-$VERSION.tar.gz -C build-linux/bin .
-    - tar -czvf mac-$VERSION.tar.gz -C build-mac/bin .
+    - cp addon/package.json  build-win/Release
+    - cp addon/package.json build-linux
+    - cp addon/package.json build-mac
+    - tar -czvf win-$VERSION.tar.gz -C build-win/Release .
+    - tar -czvf linux-$VERSION.tar.gz -C build-linux .
+    - tar -czvf mac-$VERSION.tar.gz -C build-mac .
     - gsutil cp win-$VERSION.tar.gz gs://cudo-download/images/cudo-xmr-stak/win/x64/$VERSION-rx.tar.gz
     - gsutil cp linux-$VERSION.tar.gz gs://cudo-download/images/cudo-xmr-stak/linux/x64/$VERSION-rx.tar.gz
     - gsutil cp mac-$VERSION.tar.gz gs://cudo-download/images/cudo-xmr-stak/mac/x64/$VERSION-rx.tar.gz
