@@ -29,5 +29,5 @@ else()
     set(OPENSSL_LIBRARIES "")
     remove_definitions(/DXMRIG_FEATURE_TLS)
 
-    set(CMAKE_PROJECT_NAME "${CMAKE_PROJECT_NAME}-notls")
+    #set(CMAKE_PROJECT_NAME "${CMAKE_PROJECT_NAME}-notls")
 endif()
