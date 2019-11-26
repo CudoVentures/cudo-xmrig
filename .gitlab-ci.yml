@@ -1,0 +1,114 @@
+stages:
+  - build
+  - publish
+
+pack-win:
+  stage: build
+  variables:
+    GOOGLE_APPLICATION_CREDENTIALS: 'C:\Users\Builder\build-credentials.json'
+  cache:
+    key: win
+    paths:
+      - node_modules
+  tags:
+    - shell
+    - build
+    - win
+  script:
+    - mkdir build-win
+    - cd build-win
+    - cmake -G "Visual Studio 15 2017 Win64" -T v141,host=x64 ..
+    - cmake --build . --config Release
+    - cd bin/Release
+  artifacts:
+    paths:
+      - build-win/bin/Release/xmrig.exe
+
+pack-linux:
+  stage: build
+  image: nvidia/cuda:9.2-devel-ubuntu18.04
+  cache:
+    key: linux
+    paths:
+      - node_modules
+  tags:
+    - docker
+    - build
+    - linux
+  before_script:
+    - apt update
+    - apt install -y git build-essential cmake libuv1-dev libssl-dev libhwloc-dev ocl-icd-opencl-dev wget lsb-core
+    - wget https://storage.googleapis.com/cudo-download/tools/AMD-APP-SDK-v3.0.130.136-GA-linux64.sh
+    - chmod +x AMD-APP-SDK-v3.0.130.136-GA-linux64.sh
+    - ./AMD-APP-SDK-v3.0.130.136-GA-linux64.sh -- --acceptEULA 'yes' -s
+  script:
+    - mkdir build-linux
+    - cd build-linux
+    - cmake ..
+    - make install
+  artifacts:
+    paths:
+      - build-linux/bin/xmrig
+
+pack-mac:
+  stage: build
+  cache:
+    key: mac
+    paths:
+      - node_modules
+  tags:
+    - shell
+    - build
+    - mac
+  script:
+    - mkdir build-mac
+    - cd build-mac
+    - cmake ..
+    - make install
+  artifacts:
+    paths:
+      - build-mac/bin/xmrig
+
+upload:
+  stage: publish
+  image:
+    name: gcr.io/cloud-builders/gsutil
+    entrypoint:
+      - ''
+  variables:
+    GOOGLE_APPLICATION_CREDENTIALS: /build-credentials.json
+  dependencies:
+    - pack-win
+    - pack-mac
+    - pack-linux
+  tags:
+    - docker
+    - build
+    - linux
+  before_script:
+    - apt-get update
+    - apt-get install -y apt-transport-https
+    - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+    - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+    - curl -sL https://deb.nodesource.com/setup_10.x | bash -
+    - apt-get install -y yarn nodejs
+    - echo $GCLOUD_BUILD_CREDENTIALS | base64 -d > /build-credentials.json
+    - gcloud auth activate-service-account --key-file /build-credentials.json
+    - yarn --ignore-scripts
+  script:
+    - yarn --cwd addon
+    - yarn --cwd addon build
+    - "VERSION=$(grep -m1 version package.json | awk -F: '{ print $2 }' | sed 's/[\", ]//g')"
+    - node scripts/sign.js build-win/bin/Release/xmrig.exe
+    - cp addon/dist/bundle.js  build-win/bin/Release
+    - cp addon/dist/bundle.js build-linux/bin
+    - cp addon/dist/bundle.js build-mac/bin
+    - cp addon/package.json  build-win/bin/Release
+    - cp addon/package.json build-linux/bin
+    - cp addon/package.json build-mac/bin
+    - tar -czvf win-$VERSION.tar.gz -C build-win/bin/Release .
+    - tar -czvf linux-$VERSION.tar.gz -C build-linux/bin .
+    - tar -czvf mac-$VERSION.tar.gz -C build-mac/bin .
+    - gsutil cp win-$VERSION.tar.gz gs://cudo-download/images/cudo-xmr-stak/win/x64/$VERSION-rx.tar.gz
+    - gsutil cp linux-$VERSION.tar.gz gs://cudo-download/images/cudo-xmr-stak/linux/x64/$VERSION-rx.tar.gz
+    - gsutil cp mac-$VERSION.tar.gz gs://cudo-download/images/cudo-xmr-stak/mac/x64/$VERSION-rx.tar.gz

@@ -1,23 +1,30 @@
 {
-  "name": "xmrig",
-  "version": "3.0.0",
-  "description": "RandomX, CryptoNight and Argon2 miner",
-  "main": "index.js",
-  "directories": {
-    "doc": "doc"
-  },
-  "scripts": {
-    "build": "node scripts/generate_cl.js"
-  },
+  "name": "@cudoventures/cudo-xmrig",
+  "description": "cudo-xmrig",
+  "version": "5.0.1",
+  "main": "./addon/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/xmrig/xmrig.git"
+    "url": "https://github.com/CudoVentures/cudo-xmrig.git"
   },
-  "keywords": [],
+  "scripts": {
+    "test": "mocha addon/test.spec.js"
+  },
+  "devDependencies": {
+    "@google-cloud/storage": "^2.5.0",
+    "chai": "^4.2.0",
+    "cmake-js": "^5.2.0",
+    "mocha": "^5.2.0",
+    "mocha-junit-reporter": "^1.18.0",
+    "mocha-multi": "^1.0.1",
+    "npm-run-all": "^4.1.3",
+    "prebuild": "^8.1.2",
+    "tar": "^4.4.8"
+  },
   "author": "",
-  "license": "GPLv3",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/xmrig/xmrig/issues"
+    "url": "https://github.com/CudoVentures/cudo-xmrig/issues"
   },
-  "homepage": "https://github.com/xmrig/xmrig#readme"
+  "homepage": "https://github.com/CudoVentures/cudo-xmrig#readme"
 }

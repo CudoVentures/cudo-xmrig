@@ -1,0 +1,13 @@
+/build32
+/build64
+/build
+/CMakeLists.txt.user
+/build2
+/node_modules
+/prebuilds
+.prebuildrc
+yarn-error.log
+cmake-build-debug
+.vs
+.idea
+dist
