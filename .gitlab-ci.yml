@@ -17,12 +17,11 @@ pack-win:
   script:
     - mkdir build-win
     - cd build-win
-    - cmake -G "Visual Studio 15 2017 Win64" -T v141,host=x64 ..
-    - cmake --build . --config Release
-    - cd bin/Release
+    - cmake .. -G "Visual Studio 15 2017 Win64" -T v141,host=x64
+    - make
   artifacts:
     paths:
-      - build-win/bin/Release/xmrig.exe
+      - build-win
 
 pack-linux:
   stage: build
@@ -45,10 +44,10 @@ pack-linux:
     - mkdir build-linux
     - cd build-linux
     - cmake ..
-    - make install
+    - make
   artifacts:
     paths:
-      - build-linux/bin/xmrig
+      - build-linux
 
 pack-mac:
   stage: build
@@ -64,10 +63,10 @@ pack-mac:
     - mkdir build-mac
     - cd build-mac
     - cmake ..
-    - make install
+    - make
   artifacts:
     paths:
-      - build-mac/bin/xmrig
+      - build-mac
 
 upload:
   stage: publish
