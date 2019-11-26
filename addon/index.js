@@ -42,7 +42,7 @@ module.exports = () => {
 
     let executable
     if (ctx.workload.platform === 'win') {
-      executable = path.resolve(ctx.workloadDir, 'xmrig.exe')
+      executable = path.resolve(ctx.workloadDir, 'Release', 'xmrig.exe')
       env.PATH = `${env.PATH};${ctx.workloadDir}`
     } else if (ctx.workload.platform === 'linux') {
       executable = path.resolve(ctx.workloadDir, 'xmrig')
