@@ -63,7 +63,7 @@ module.exports = () => {
       '-p', 'x',
       '--no-nvml',
       '--no-color',
-      '--health-print-time=1'
+      '--print-time=1'
     ]
 
     try {
