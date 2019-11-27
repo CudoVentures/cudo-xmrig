@@ -66,8 +66,8 @@ module.exports = () => {
       '--print-time=1'
     ]
 
-    if (ctx.workloadSettings['threads'] !== undefined) {
-      params.push('-t', ctx.workloadSettings['threads'])
+    if (ctx.workloadSettings['cpu-threads'] !== undefined) {
+      params.push('-t', ctx.workloadSettings['cpu-threads'])
     }
     if (ctx.workloadSettings['cpu-affinity'] !== undefined) {
       params.push('--cpu-affinity', ctx.workloadSettings['cpu-affinity'])
