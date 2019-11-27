@@ -66,6 +66,22 @@ module.exports = () => {
       '--print-time=1'
     ]
 
+    if (ctx.workloadSettings['threads'] !== undefined) {
+      params.push('-t', ctx.workloadSettings['threads'])
+    }
+    if (ctx.workloadSettings['cpu-affinity'] !== undefined) {
+      params.push('--cpu-affinity', ctx.workloadSettings['cpu-affinity'])
+    }
+    if (ctx.workloadSettings['cpu-priority'] !== undefined) {
+      params.push('--cpu-priority', ctx.workloadSettings['cpu-priority'])
+    }
+    if (ctx.workloadSettings['asm'] !== undefined) {
+      params.push(`--asm=${ctx.workloadSettings['asm']}`)
+    }
+    if (ctx.workloadSettings['randomx-no-numa'] !== undefined) {
+      params.push('--randomx-no-numa')
+    }
+
     try {
       fs.accessSync(executable, fs.constants.R_OK)
       module.proc = execFile(executable, params, {
