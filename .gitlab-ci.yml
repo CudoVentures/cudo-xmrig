@@ -74,6 +74,9 @@ upload:
     name: gcr.io/cloud-builders/gsutil
     entrypoint:
       - ''
+  only:
+    refs:
+      - tags
   variables:
     GOOGLE_APPLICATION_CREDENTIALS: /build-credentials.json
   dependencies:
