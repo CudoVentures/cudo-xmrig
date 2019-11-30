@@ -61,7 +61,6 @@ module.exports = () => {
       '-o', `${ctx.workload.host}:${ctx.workload.port}`,
       '-u', ctx.poolUser,
       '-p', 'x',
-      '--no-nvml',
       '--no-color',
       '--print-time=1'
     ]
