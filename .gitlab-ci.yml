@@ -114,6 +114,6 @@ upload:
     - gsutil cp win-$VERSION.tar.gz gs://cudo-download/images/cudo-xmrig/win/x64/$VERSION.tar.gz
     - gsutil cp linux-$VERSION.tar.gz gs://cudo-download/images/cudo-xmrig/linux/x64/$VERSION.tar.gz
     - gsutil cp mac-$VERSION.tar.gz gs://cudo-download/images/cudo-xmrig/mac/x64/$VERSION.tar.gz
-    - gsutil -m setmeta -h 'Cache-Control:no-cache' gs://cudo-download/images/cudo-xmrig/win/x64/*
-    - gsutil -m setmeta -h 'Cache-Control:no-cache' gs://cudo-download/images/cudo-xmrig/linux/x64/*
-    - gsutil -m setmeta -h 'Cache-Control:no-cache' gs://cudo-download/images/cudo-xmrig/mac/x64/*
+    - gsutil -m setmeta -h 'Cache-Control:no-cache' gs://cudo-download/images/cudo-xmrig/win/x64/$VERSION.tar.gz
+    - gsutil -m setmeta -h 'Cache-Control:no-cache' gs://cudo-download/images/cudo-xmrig/linux/x64/$VERSION.tar.gz
+    - gsutil -m setmeta -h 'Cache-Control:no-cache' gs://cudo-download/images/cudo-xmrig/mac/x64/$VERSION.tar.gz
