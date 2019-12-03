@@ -21,7 +21,7 @@ pack-win:
     - cmake --build . --config Release
   artifacts:
     paths:
-      - build-win
+      - build-win/Release/xmrig.exe
 
 pack-linux:
   stage: build
