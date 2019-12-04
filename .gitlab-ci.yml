@@ -6,10 +6,6 @@ pack-win:
   stage: build
   variables:
     GOOGLE_APPLICATION_CREDENTIALS: 'C:\Users\Builder\build-credentials.json'
-  cache:
-    key: win
-    paths:
-      - node_modules
   tags:
     - shell
     - build
@@ -26,10 +22,6 @@ pack-win:
 pack-linux:
   stage: build
   image: nvidia/cuda:9.2-devel-ubuntu18.04
-  cache:
-    key: linux
-    paths:
-      - node_modules
   tags:
     - docker
     - build
@@ -51,10 +43,6 @@ pack-linux:
 
 pack-mac:
   stage: build
-  cache:
-    key: mac
-    paths:
-      - node_modules
   tags:
     - shell
     - build
