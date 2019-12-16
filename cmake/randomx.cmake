@@ -75,13 +75,14 @@ if (WITH_RANDOMX)
             )
 
         list(APPEND SOURCES_CRYPTO
-             src/crypto/rx/RxConfig_hwloc.cpp
              src/crypto/rx/RxNUMAStorage.cpp
             )
-    else()
-        list(APPEND SOURCES_CRYPTO
-             src/crypto/rx/RxConfig_basic.cpp
-            )
+    endif()
+
+    if (WIN32)
+        list(APPEND SOURCES_CRYPTO src/crypto/rx/Rx_windows.cpp)
+    elseif (XMRIG_OS_LINUX AND NOT XMRIG_ARM)
+        list(APPEND SOURCES_CRYPTO src/crypto/rx/Rx_linux.cpp)
     endif()
 else()
     remove_definitions(/DXMRIG_ALGO_RANDOMX)
