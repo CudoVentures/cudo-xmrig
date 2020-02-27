@@ -1,3 +1,27 @@
+# v5.7.0
+- **Added SOCKS5 proxies support for Tor https://xmrig.com/docs/miner/tor.**
+- [#377](https://github.com/xmrig/xmrig-proxy/issues/377) Fixed duplicate jobs in daemon (solo) mining client.
+- [#1560](https://github.com/xmrig/xmrig/pull/1560) RandomX 0.3-0.4% speedup depending on CPU.
+- Fixed possible crashes in HTTP client.
+
+# v5.6.0
+- [#1536](https://github.com/xmrig/xmrig/pull/1536) Added workaround for new AMD GPU drivers.
+- [#1546](https://github.com/xmrig/xmrig/pull/1546) Fixed generic OpenCL code for AMD Navi GPUs.
+- [#1551](https://github.com/xmrig/xmrig/pull/1551) Added RandomX JIT for AMD Navi  GPUs.
+- Added health information for AMD GPUs (clocks/power/fan/temperature) via ADL (Windows) and sysfs (Linux).
+- Fixed possible nicehash nonce overflow in some conditions.
+- Fixed wrong OpenCL platform on macOS, option `platform` now ignored on this OS.
+
+# v5.5.3
+- [#1529](https://github.com/xmrig/xmrig/pull/1529) Fixed crash on Bulldozer CPUs.
+
+# v5.5.2
+- [#1500](https://github.com/xmrig/xmrig/pull/1500) Removed unnecessary code from RandomX JIT compiler.
+- [#1502](https://github.com/xmrig/xmrig/pull/1502) Optimizations for AMD Bulldozer.
+- [#1508](https://github.com/xmrig/xmrig/pull/1508) Added support for BMI2 instructions.
+- [#1510](https://github.com/xmrig/xmrig/pull/1510) Optimized `CFROUND` instruction for RandomX.
+- [#1520](https://github.com/xmrig/xmrig/pull/1520) Fixed thread affinity.
+
 # v5.5.1
 - [#1469](https://github.com/xmrig/xmrig/issues/1469) Fixed build with gcc 4.8.
 - [#1473](https://github.com/xmrig/xmrig/pull/1473) Added RandomX auto-config for mobile Ryzen APUs.
