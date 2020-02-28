@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 project(xmrig)
 
 option(WITH_LIBCPUID        "Enable libcpuid support" ON)
-option(WITH_HWLOC           "Enable hwloc support" ON)
+option(WITH_HWLOC           "Enable hwloc support" OFF)
 option(WITH_CN_LITE         "Enable CryptoNight-Lite algorithms family" ON)
 option(WITH_CN_HEAVY        "Enable CryptoNight-Heavy algorithms family" ON)
 option(WITH_CN_PICO         "Enable CryptoNight-Pico algorithm" ON)
