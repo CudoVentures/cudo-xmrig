@@ -1,7 +1,7 @@
 {
   "name": "@cudoventures/cudo-xmrig",
   "description": "cudo-xmrig",
-  "version": "5.7.0",
+  "version": "5.9.0",
   "main": "./addon/index.js",
   "repository": {
     "type": "git",
