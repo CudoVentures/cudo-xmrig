@@ -1,7 +1,5 @@
 # XMRig
 
-**:warning: [Monero changed PoW algorithm to RandomX on November 30.](https://github.com/xmrig/xmrig/issues/1204)**
-
 [![Github All Releases](https://img.shields.io/github/downloads/xmrig/xmrig/total.svg)](https://github.com/xmrig/xmrig/releases)
 [![GitHub release](https://img.shields.io/github/release/xmrig/xmrig/all.svg)](https://github.com/xmrig/xmrig/releases)
 [![GitHub Release Date](https://img.shields.io/github/release-date-pre/xmrig/xmrig.svg)](https://github.com/xmrig/xmrig/releases)
@@ -9,7 +7,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/xmrig/xmrig.svg)](https://github.com/xmrig/xmrig/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/xmrig/xmrig.svg)](https://github.com/xmrig/xmrig/network)
 
-XMRig High performance, open source, cross platform RandomX, CryptoNight and Argon2 CPU/GPU miner, with official support for Windows.
+XMRig High performance, open source, cross platform RandomX, CryptoNight, AstroBWT and Argon2 CPU/GPU miner, with official support for Windows.
 
 ## Mining backends
 - **CPU** (x64/x86/ARM)
@@ -69,6 +67,7 @@ CPU backend:
       --randomx-1gb-pages       use 1GB hugepages for dataset (Linux only)
       --randomx-wrmsr=N         write custom value (0-15) to Intel MSR register 0x1a4 or disable MSR mod (-1)
       --randomx-no-rdmsr        disable reverting initial MSR values on exit
+      --astrobwt-max-size=N     skip hashes with large stage 2 size, default: 550, min: 400, max: 1200
 
 API:
       --api-worker-id=ID        custom worker-id for API

@@ -71,14 +71,20 @@ private:
     bool parseJob(const rapidjson::Value &params, int *code);
     bool parseResponse(int64_t id, const rapidjson::Value &result, const rapidjson::Value &error);
     int64_t getBlockTemplate();
+    int64_t rpcSend(const rapidjson::Document &doc);
     void retry();
-    void send(int method, const char *url, const char *data = nullptr, size_t size = 0);
-    void send(int method, const char *url, const rapidjson::Document &doc);
+    void send(const char *path);
     void setState(SocketState state);
 
-    bool m_monero;
+    enum {
+        API_CRYPTONOTE_DEFAULT,
+        API_MONERO,
+        API_DERO,
+    } m_apiVersion = API_MONERO;
+
     std::shared_ptr<IHttpListener> m_httpListener;
     String m_blocktemplate;
+    String m_blockhashingblob;
     String m_prevHash;
     String m_tlsFingerprint;
     String m_tlsVersion;

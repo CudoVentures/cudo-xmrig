@@ -32,7 +32,7 @@ public:
     inline HttpListener(IHttpListener *listener) : m_listener(listener) {}
 
 protected:
-    inline void onHttpData(const HttpData &data) override { m_listener->onHttpData(data); };
+    void onHttpData(const HttpData &data) override;
 
 private:
     IHttpListener *m_listener;

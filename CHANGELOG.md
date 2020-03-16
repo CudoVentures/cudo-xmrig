@@ -1,3 +1,20 @@
+# v5.9.0
+- [#1578](https://github.com/xmrig/xmrig/pull/1578) Added new RandomKEVA algorithm for upcoming Kevacoin fork, as `"algo": "rx/keva"` or `"coin": "keva"`.
+- [#1584](https://github.com/xmrig/xmrig/pull/1584) Fixed invalid AstroBWT hashes after algorithm switching.
+- [#1585](https://github.com/xmrig/xmrig/issues/1585) Fixed build without HTTP support.
+- Added command line option `--astrobwt-max-size`.
+
+# v5.8.2
+- [#1580](https://github.com/xmrig/xmrig/pull/1580) AstroBWT algorithm 20-50% speedup.
+  - Added new option `astrobwt-max-size`.
+- [#1581](https://github.com/xmrig/xmrig/issues/1581) Fixed macOS build.
+
+# v5.8.1
+- [#1575](https://github.com/xmrig/xmrig/pull/1575) Fixed new block detection for DERO solo mining.
+
+# v5.8.0
+- [#1573](https://github.com/xmrig/xmrig/pull/1573) Added new AstroBWT algorithm for upcoming DERO fork, as `"algo": "astrobwt"` or `"coin": "dero"`.
+
 # v5.7.0
 - **Added SOCKS5 proxies support for Tor https://xmrig.com/docs/miner/tor.**
 - [#377](https://github.com/xmrig/xmrig-proxy/issues/377) Fixed duplicate jobs in daemon (solo) mining client.
