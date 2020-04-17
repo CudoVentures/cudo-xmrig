@@ -77,6 +77,7 @@ xmrig::CpuWorker<N>::CpuWorker(size_t id, const CpuLaunchData &data) :
     Worker(id, data.affinity, data.priority),
     m_algorithm(data.algorithm),
     m_assembly(data.assembly),
+    m_astrobwtAVX2(data.astrobwtAVX2),
     m_hwAES(data.hwAES),
     m_yield(data.yield),
     m_av(data.av()),
@@ -92,7 +93,7 @@ template<size_t N>
 xmrig::CpuWorker<N>::~CpuWorker()
 {
 #   ifdef XMRIG_ALGO_RANDOMX
-    delete m_vm;
+    RxVm::destroy(m_vm);
 #   endif
 
     CnCtx::release(m_ctx, N);
@@ -117,7 +118,7 @@ void xmrig::CpuWorker<N>::allocateRandomX_VM()
     }
 
     if (!m_vm) {
-        m_vm = new RxVm(dataset, m_memory->scratchpad(), !m_hwAES, m_assembly);
+        m_vm = RxVm::create(dataset, m_memory->scratchpad(), !m_hwAES, m_assembly, m_node);
     }
 }
 #endif
@@ -248,21 +249,21 @@ void xmrig::CpuWorker<N>::start()
             if (job.algorithm().family() == Algorithm::RANDOM_X) {
                 if (first) {
                     first = false;
-                    randomx_calculate_hash_first(m_vm->get(), tempHash, m_job.blob(), job.size());
+                    randomx_calculate_hash_first(m_vm, tempHash, m_job.blob(), job.size());
                 }
 
                 if (!nextRound(m_job)) {
                     break;
                 }
 
-                randomx_calculate_hash_next(m_vm->get(), tempHash, m_job.blob(), job.size(), m_hash);
+                randomx_calculate_hash_next(m_vm, tempHash, m_job.blob(), job.size(), m_hash);
             }
             else
 #           endif
             {
 #               ifdef XMRIG_ALGO_ASTROBWT
                 if (job.algorithm().family() == Algorithm::ASTROBWT) {
-                    if (!astrobwt::astrobwt_dero(m_job.blob(), job.size(), m_ctx[0]->memory, m_hash, m_astrobwtMaxSize))
+                    if (!astrobwt::astrobwt_dero(m_job.blob(), job.size(), m_ctx[0]->memory, m_hash, m_astrobwtMaxSize, m_astrobwtAVX2))
                         valid = false;
                 }
                 else

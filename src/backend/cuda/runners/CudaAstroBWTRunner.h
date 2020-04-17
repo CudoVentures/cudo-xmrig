@@ -5,7 +5,6 @@
  * Copyright 2014-2016 Wolf9466    <https://github.com/OhGodAPet>
  * Copyright 2016      Jay D Dee   <jayddee246@gmail.com>
  * Copyright 2017-2018 XMR-Stak    <https://github.com/fireice-uk>, <https://github.com/psychocrypt>
- * Copyright 2018      Lee Clagett <https://github.com/vtnerd>
  * Copyright 2018-2020 SChernykh   <https://github.com/SChernykh>
  * Copyright 2016-2020 XMRig       <https://github.com/xmrig>, <support@xmrig.com>
  *
@@ -23,56 +22,38 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef XMRIG_COIN_H
-#define XMRIG_COIN_H
+#ifndef XMRIG_CUDAASTROBWTRUNNER_H
+#define XMRIG_CUDAASTROBWTRUNNER_H
 
 
-#include "crypto/common/Algorithm.h"
-#include "rapidjson/fwd.h"
+#include "backend/cuda/runners/CudaBaseRunner.h"
 
 
 namespace xmrig {
 
 
-class Coin
+class CudaAstroBWTRunner : public CudaBaseRunner
 {
 public:
-    enum Id : int {
-        INVALID = -1,
-        MONERO,
-        ARQMA,
-        DERO,
-        KEVA
-    };
+    static constexpr uint32_t BWT_DATA_MAX_SIZE = 560 * 1024 - 256;
+    static constexpr uint32_t BWT_DATA_STRIDE = (BWT_DATA_MAX_SIZE + 256 + 255) & ~255U;
 
+    CudaAstroBWTRunner(size_t index, const CudaLaunchData &data);
 
-    Coin() = default;
-    inline Coin(const char *name) : m_id(parse(name)) {}
-    inline Coin(Id id) : m_id(id)                     {}
+protected:
+    inline size_t intensity() const override { return m_intensity; }
+    inline size_t roundSize() const override;
+    inline size_t processedHashes() const override;
 
-
-    inline bool isEqual(const Coin &other) const        { return m_id == other.m_id; }
-    inline bool isValid() const                         { return m_id != INVALID; }
-    inline Id id() const                                { return m_id; }
-
-    Algorithm::Id algorithm(uint8_t blobVersion) const;
-    const char *name() const;
-    rapidjson::Value toJSON() const;
-
-    inline bool operator!=(Coin::Id id) const           { return m_id != id; }
-    inline bool operator!=(const Coin &other) const     { return !isEqual(other); }
-    inline bool operator==(Coin::Id id) const           { return m_id == id; }
-    inline bool operator==(const Coin &other) const     { return isEqual(other); }
-    inline operator Coin::Id() const                    { return m_id; }
-
-    static Id parse(const char *name);
+    bool run(uint32_t startNonce, uint32_t *rescount, uint32_t *resnonce) override;
+    bool set(const Job &job, uint8_t *blob) override;
 
 private:
-    Id m_id = INVALID;
+    size_t m_intensity  = 0;
 };
 
 
 } /* namespace xmrig */
 
 
-#endif /* XMRIG_COIN_H */
+#endif // XMRIG_CUDAASTROBWTRUNNER_H

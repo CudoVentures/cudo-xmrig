@@ -34,6 +34,11 @@
 #include "net/JobResult.h"
 
 
+#ifdef XMRIG_ALGO_RANDOMX
+class randomx_vm;
+#endif
+
+
 namespace xmrig {
 
 
@@ -70,6 +75,7 @@ private:
 
     const Algorithm m_algorithm;
     const Assembly m_assembly;
+    const bool m_astrobwtAVX2;
     const bool m_hwAES;
     const bool m_yield;
     const CnHash::AlgoVariant m_av;
@@ -81,7 +87,7 @@ private:
     WorkerJob<N> m_job;
 
 #   ifdef XMRIG_ALGO_RANDOMX
-    RxVm *m_vm = nullptr;
+    randomx_vm *m_vm = nullptr;
 #   endif
 };
 
