@@ -55,5 +55,5 @@ else()
             )
     endif()
 
-    set(CMAKE_PROJECT_NAME "${CMAKE_PROJECT_NAME}-notls")
+    set(CMAKE_PROJECT_NAME "${CMAKE_PROJECT_NAME}")
 endif()
