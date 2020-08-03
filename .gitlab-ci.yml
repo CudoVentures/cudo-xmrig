@@ -91,6 +91,7 @@ upload:
     - "VERSION=$(grep -m1 version package.json | awk -F: '{ print $2 }' | sed 's/[\", ]//g')"
     - node scripts/sign.js build-win/Release/xmrig.exe
     - cp addon/dist/bundle.js  build-win/Release
+    - cp bin/WinRing0/WinRing0x64.sys  build-win/Release
     - cp addon/dist/bundle.js build-linux
     - cp addon/dist/bundle.js build-mac
     - cp addon/package.json  build-win/Release
