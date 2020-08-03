@@ -34,7 +34,7 @@
 
 static inline OSVERSIONINFOEX winOsVersion()
 {
-    using RtlGetVersionFunction = NTSTATUS (*)(LPOSVERSIONINFO);
+    typedef NTSTATUS (NTAPI *RtlGetVersionFunction)(LPOSVERSIONINFO);
     OSVERSIONINFOEX result = { sizeof(OSVERSIONINFOEX), 0, 0, 0, 0, {'\0'}, 0, 0, 0, 0, 0};
 
     HMODULE ntdll = GetModuleHandleW(L"ntdll.dll");
@@ -157,3 +157,12 @@ void xmrig::Platform::setThreadPriority(int priority)
     SetThreadPriority(GetCurrentThread(), prio);
 }
 
+
+bool xmrig::Platform::isOnBatteryPower()
+{
+    SYSTEM_POWER_STATUS st;
+    if (GetSystemPowerStatus(&st)) {
+        return (st.ACLineStatus == 0);
+    }
+    return false;
+}

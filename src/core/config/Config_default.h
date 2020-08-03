@@ -65,7 +65,8 @@ R"===(
         "argon2-impl": null,
         "astrobwt-max-size": 550,
         "cn/0": false,
-        "cn-lite/0": false
+        "cn-lite/0": false,
+        "kawpow": false
     },
     "opencl": {
         "enabled": false,
@@ -108,7 +109,8 @@ R"===(
     "retry-pause": 5,
     "syslog": false,
     "user-agent": null,
-    "watch": true
+    "watch": true,
+    "pause-on-battery": false
 }
 )===";
 #endif
