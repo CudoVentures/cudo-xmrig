@@ -1,6 +1,6 @@
 {
   "name": "cudo-xmrig",
-  "version": "6.3.1",
+  "version": "6.3.4",
   "main": "bundle.js",
   "author": "Cudo Ventures",
   "scripts": {
