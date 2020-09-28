@@ -23,6 +23,7 @@ option(WITH_NVML            "Enable NVML (NVIDIA Management Library) support (on
 option(WITH_ADL             "Enable ADL (AMD Display Library) or sysfs support (only if OpenCL backend enabled)" ON)
 option(WITH_STRICT_CACHE    "Enable strict checks for OpenCL cache" ON)
 option(WITH_INTERLEAVE_DEBUG_LOG "Enable debug log for threads interleave" OFF)
+option(WITH_PROFILING       "Enable profiling for developers" OFF)
 
 option(BUILD_STATIC         "Build static binary" OFF)
 option(ARM_TARGET           "Force use specific ARM target 8 or 7" 0)
@@ -143,6 +144,8 @@ elseif (XMRIG_OS_APPLE)
         src/App_unix.cpp
         src/crypto/common/VirtualMemory_unix.cpp
         )
+    find_library(IOKIT_LIBRARY IOKit)
+    set(EXTRA_LIBS ${IOKIT_LIBRARY})
 else()
     list(APPEND SOURCES_OS
         src/App_unix.cpp
@@ -196,10 +199,6 @@ include_directories(src)
 include_directories(src/3rdparty)
 include_directories(${UV_INCLUDE_DIR})
 
-if (BUILD_STATIC)
-    set(CMAKE_EXE_LINKER_FLAGS " -static")
-endif()
-
 if (WITH_DEBUG_LOG)
     add_definitions(/DAPP_DEBUG)
 endif()
@@ -210,4 +209,8 @@ target_link_libraries(${CMAKE_PROJECT_NAME} ${XMRIG_ASM_LIBRARY} ${OPENSSL_LIBRA
 if (WIN32)
     add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/bin/WinRing0/WinRing0x64.sys" $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>)
+endif()
+
+if (CMAKE_CXX_COMPILER_ID MATCHES Clang AND CMAKE_BUILD_TYPE STREQUAL Release)
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_STRIP} ${CMAKE_PROJECT_NAME})
 endif()
