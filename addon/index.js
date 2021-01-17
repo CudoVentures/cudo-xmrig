@@ -1,4 +1,4 @@
-const { execFile } = require('child_process')
+const { spawn } = require('child_process')
 const EventEmitter = require('events')
 const fs = require('fs')
 const path = require('path')
@@ -83,9 +83,9 @@ module.exports = () => {
 
     try {
       fs.accessSync(executable, fs.constants.R_OK)
-      module.proc = execFile(executable, params, {
-        silent: true,
-        env
+      module.proc = spawn(executable, params, {
+        env,
+        windowsHide: true
       })
     } catch (err) {
       module.emit('error', err.toString())
