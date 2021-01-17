@@ -41,21 +41,6 @@ pack-linux:
     paths:
       - build-linux/xmrig
 
-pack-mac:
-  stage: build
-  tags:
-    - shell
-    - build
-    - mac
-  script:
-    - mkdir build-mac
-    - cd build-mac
-    - cmake ..
-    - make
-  artifacts:
-    paths:
-      - build-mac/xmrig
-
 upload:
   stage: publish
   image:
@@ -69,7 +54,6 @@ upload:
     GOOGLE_APPLICATION_CREDENTIALS: /build-credentials.json
   dependencies:
     - pack-win
-    - pack-mac
     - pack-linux
   tags:
     - docker
@@ -93,16 +77,11 @@ upload:
     - cp addon/dist/bundle.js  build-win/Release
     - cp bin/WinRing0/WinRing0x64.sys  build-win/Release
     - cp addon/dist/bundle.js build-linux
-    - cp addon/dist/bundle.js build-mac
     - cp addon/package.json  build-win/Release
     - cp addon/package.json build-linux
-    - cp addon/package.json build-mac
     - tar -czvf win-$VERSION.tar.gz -C build-win/Release .
     - tar -czvf linux-$VERSION.tar.gz -C build-linux .
-    - tar -czvf mac-$VERSION.tar.gz -C build-mac .
     - gsutil cp win-$VERSION.tar.gz gs://cudo-download/images/cudo-xmrig/win/x64/$VERSION.tar.gz
     - gsutil cp linux-$VERSION.tar.gz gs://cudo-download/images/cudo-xmrig/linux/x64/$VERSION.tar.gz
-    - gsutil cp mac-$VERSION.tar.gz gs://cudo-download/images/cudo-xmrig/mac/x64/$VERSION.tar.gz
     - gsutil -m setmeta -h 'Cache-Control:no-cache' gs://cudo-download/images/cudo-xmrig/win/x64/$VERSION.tar.gz
     - gsutil -m setmeta -h 'Cache-Control:no-cache' gs://cudo-download/images/cudo-xmrig/linux/x64/$VERSION.tar.gz
-    - gsutil -m setmeta -h 'Cache-Control:no-cache' gs://cudo-download/images/cudo-xmrig/mac/x64/$VERSION.tar.gz
