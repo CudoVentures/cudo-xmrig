@@ -1,4 +1,5 @@
 const { spawn } = require('child_process')
+const { time } = require('console')
 const EventEmitter = require('events')
 const fs = require('fs')
 const path = require('path')
@@ -6,21 +7,71 @@ const path = require('path')
 const NEWLINE_SEPERATOR = /[\r]{0,1}\n/
 const ANSI_REGEX = /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g
 
+//[2021-01-19 11:05:28.562]  miner    speed 10s/60s/15m 2585.1 n/a n/a H/s max 2588.9 H/s
+const timestampAndMessageMatch = /\[(?<timestamp>.*)\]\s+(?<message>.*)/
+const categoryAndMessageMatch = /(?<category>\w+)\s+(?<subMessage>.*)/
+const hashRateMatch = /speed 10s\/60s\/15m (?<hashRate10s>.*) (?<hashRate60s>.*) (?<hashRate15m>.*) H\/s max (?<hashRateMax>.*) H\/s/
+// accepted (63/0) diff 61364 (108 ms)
+const shareMatch = /accepted \((?<accepted>\d+)\/(?<rejected>\d+)\) diff (?<difficulty>\d+) \((?<time>\d+) ms\)/
+
 module.exports = () => {
   const module = new EventEmitter()
   module.isRunning = false
   module.proc = null
 
-  module.parseLog = message => {
-    const parts = message.toLowerCase().split(' ').filter(o => o)
-    const log = message.split(' ').slice(4).join(' ').trim()
-
-    if (parts[2] === 'speed' && parts[4]) {
-      let hashRate = parseFloat(parts[4] || 0) || 0
-      return { type: 'hashRate', hashRate }
+  module.parseLog = logLine => {
+    const timestampAndMessageParsed = logLine.match(timestampAndMessageMatch)
+    if (timestampAndMessageParsed == null) {
+      return { type: 'log', message: logLine }
     }
 
-    return { type: 'log', message: log }
+    const { message } = timestampAndMessageParsed.groups
+    if (!message) {
+      return { type: 'log', message: logLine }
+    }
+
+    const categoryAndMessageParsed = message.match(categoryAndMessageMatch)
+    if (categoryAndMessageParsed == null) {
+      return { type: 'log', message: logLine }
+    }
+
+    const { category, subMessage } = categoryAndMessageParsed.groups
+
+    if (!category || !subMessage) {
+      return { type: 'log', message }
+    }
+
+    switch (category) {
+      case 'miner':
+        const hashRateGroups = subMessage.match(hashRateMatch)
+        if (hashRateGroups == null) {
+          return { type: 'log', message }
+        }
+        const { hashRate10s } = hashRateGroups.groups
+        if (hashRate10s == null || hashRate10s === 'n/a') {
+          return { type: 'hashRate', hashRate: 0, message }
+        }
+
+        return { type: 'hashRate', hashRate: parseFloat(hashRate10s), message }
+      case 'cpu':
+        const shareGroups = subMessage.match(shareMatch)
+        if (shareGroups == null) {
+          return { type: 'log', message }
+        }
+        const { accepted, difficulty, rejected } = shareGroups.groups
+        if (!accepted || !rejected) {
+          return { type: 'log', message }
+        }
+        return {
+          difficulty: parseInt(difficulty),
+          accepted: parseInt(accepted),
+          message,
+          rejected: parseInt(rejected),
+          type: 'shares'
+        }
+      default:
+        return { type: 'log', message }
+    }
   }
 
   module.logBuffer = ''
@@ -29,7 +80,9 @@ module.exports = () => {
     const split = module.logBuffer.split(NEWLINE_SEPERATOR)
     split.forEach(o => {
       const log = module.parseLog(o.replace(ANSI_REGEX, ''))
-      module.emit('log', log)
+      if (log) {
+        module.emit('log', log)
+      }
     })
     module.logBuffer = split[split.length - 1]
   }
