@@ -13,7 +13,8 @@ pack-win:
   script:
     - mkdir build-win
     - cd build-win
-    - cmake .. -G "Visual Studio 15 2017 Win64" -T v141,host=x64 -DXMRIG_DEPS=win-deps
+    - git clone https://github.com/xmrig/xmrig-deps.git
+    - cmake .. -G "Visual Studio 16 2019" -A x64 -DXMRIG_DEPS=$PWD/xmrigs-deps/msvc2019/x64
     - cmake --build . --config Release
   artifacts:
     paths:
@@ -21,24 +22,18 @@ pack-win:
 
 pack-linux:
   stage: build
-  image: nvidia/cuda:9.2-devel-ubuntu18.04
+  image: ubuntu:20.04
   tags:
     - docker
     - build
     - linux
   before_script:
     - apt update
-    - apt install -y git build-essential cmake libuv1-dev libssl-dev libhwloc-dev ocl-icd-opencl-dev wget lsb-core
-    - wget https://storage.googleapis.com/cudo-download/tools/AMD-APP-SDK-v3.0.130.136-GA-linux64.sh
-    - chmod +x AMD-APP-SDK-v3.0.130.136-GA-linux64.sh
-    - ./AMD-APP-SDK-v3.0.130.136-GA-linux64.sh -- --acceptEULA 'yes' -s
+    - apt install -y git build-essential cmake wget lsb-core
   script:
-    - cd scripts
-    - ./build_deps.sh
-    - cd ..
-    - mkdir build-linux
-    - cd build-linux
-    - cmake ..
+    - cd scripts && ./build_deps.sh && cd ..
+    - mkdir build-linux && cd build-linux
+    - cmake .. -DXMRIG_DEPS=$PWD/../scripts/deps
     - make
   artifacts:
     paths:
