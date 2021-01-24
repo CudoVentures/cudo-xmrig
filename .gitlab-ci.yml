@@ -29,7 +29,7 @@ pack-linux:
     - linux
   before_script:
     - apt update
-    - apt install -y git build-essential cmake wget lsb-core
+    - DEBIAN_FRONTEND=noninteractive apt install -y git build-essential cmake wget lsb-core
   script:
     - cd scripts && ./build_deps.sh && cd ..
     - mkdir build-linux && cd build-linux
