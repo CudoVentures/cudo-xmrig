@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 2.8.12)
 project(xmrig)
 
-option(WITH_HWLOC           "Enable hwloc support" OFF)
 option(WITH_CN_LITE         "Enable CryptoNight-Lite algorithms family" ON)
 option(WITH_CN_HEAVY        "Enable CryptoNight-Heavy algorithms family" ON)
 option(WITH_CN_PICO         "Enable CryptoNight-Pico algorithm" ON)
+option(WITH_HWLOC           "Enable hwloc support" ON)
 option(WITH_RANDOMX         "Enable RandomX algorithms family" ON)
 option(WITH_ARGON2          "Enable Argon2 algorithms family" ON)
 option(WITH_ASTROBWT        "Enable AstroBWT algorithms family" ON)

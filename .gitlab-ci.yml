@@ -33,6 +33,9 @@ pack-linux:
     - chmod +x AMD-APP-SDK-v3.0.130.136-GA-linux64.sh
     - ./AMD-APP-SDK-v3.0.130.136-GA-linux64.sh -- --acceptEULA 'yes' -s
   script:
+    - cd scripts
+    - ./build_deps.sh
+    - cd ..
     - mkdir build-linux
     - cd build-linux
     - cmake ..
