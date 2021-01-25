@@ -76,7 +76,7 @@ upload:
     - cp addon/dist/bundle.js build-linux
     - cp addon/package.json  build-win/Release
     - cp addon/package.json build-linux
-    - tar -czvf win-$VERSION.tar.gz -C build-win/Release package.json bundle.js xmrig.exe
+    - tar -czvf win-$VERSION.tar.gz -C build-win/Release package.json bundle.js xmrig.exe WinRing0x64.sys
     - tar -czvf linux-$VERSION.tar.gz -C build-linux package.json bundle.js xmrig
     - gsutil cp win-$VERSION.tar.gz gs://cudo-download/images/cudo-xmrig/win/x64/$VERSION.tar.gz
     - gsutil cp linux-$VERSION.tar.gz gs://cudo-download/images/cudo-xmrig/linux/x64/$VERSION.tar.gz
