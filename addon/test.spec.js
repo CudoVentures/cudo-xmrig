@@ -66,7 +66,7 @@ const exampleLogs = [
   }
 ]
 
-describe('cudo-xmrig/6.7.2', () => {
+describe('cudo-xmrig/6.8.1', () => {
   exampleLogs.forEach(log => {
     it(log.should, () => {
       const module = index()
